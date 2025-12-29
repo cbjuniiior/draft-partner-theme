@@ -592,7 +592,8 @@
         },
 
         reviewsOnProductPage: function () {
-            let commentsBlock = $(`<div class="tabs-reviews">${window.commentsBlock}</div>`);
+            const commentsBlockHtml = $('#tray-comments-template').html() || '';
+            let commentsBlock = $(`<div class="tabs-reviews">${commentsBlockHtml}</div>`);
             const buttonReview =
                 '<button type="submit" class="submit-review button2">Enviar Avalia&ccedil;&atilde;o</button>';
             const star = '<span class="icon-star" aria-hidden="true"></span>';

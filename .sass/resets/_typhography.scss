@@ -194,6 +194,11 @@ $fontIcons-name: 'partners';
     color: var(--c_header_icon);
     font-size: 1.5rem;
 }
+.icon-support::before {
+    content: '\e910'; // Usando o mesmo ícone de phone como base, pode ser alterado
+    color: var(--c_header_icon);
+    font-size: 1.6rem;
+}
 //  social media icons
 .icon-facebook::before {
     content: '\e917';
@@ -227,7 +232,7 @@ $fontIcons-name: 'partners';
     font-size: 2rem;
 }
 // Font
-$font_name: 'Source Sans Pro', sans-serif;
+$font_name: 'DM Sans', 'Inter', sans-serif;
 
 html {
     font-size: 16px; /*for using REM units*/

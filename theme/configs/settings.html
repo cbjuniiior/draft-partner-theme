@@ -3418,6 +3418,8 @@
                                 <li>Depoimentos</li>
                                 <li>Newsletter</li>
                                 <li>Categorias e busca</li>
+                                <li>Topbar</li>
+                                <li>Central de Atendimento</li>
                                 <li>P&aacute;gina do produto</li>
                             </ul>
                         </div>
@@ -3603,6 +3605,162 @@
                                     </div>
                                 </div>
 
+                            </div>
+
+                            <!-- Topbar -->
+                            <div class="tab-show">
+                                <div class="tab-header">
+                                    <div class="title-col">Topbar</div>
+                                    <div class="msg">Configure a barra superior do cabe&ccedil;alho.</div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center">
+                                            <span>Ativar Topbar</span>
+                                            <label class="check-drag">
+                                                <input type="checkbox" name="topbar_active" value="1">
+                                                <span class="icon"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center">
+                                            <span>Texto da Topbar</span>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area max">
+                                                <textarea name="topbar_text" placeholder="Digite o texto que será exibido na topbar" rows="4" style="resize: vertical; font-family: inherit;"></textarea>
+                                                <div class="msg list-colors">Use HTML básico para formatação (ex: &lt;strong&gt;, &lt;em&gt;). O texto será exibido na barra superior do cabeçalho.</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center">
+                                            <span>Ícone</span>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area">
+                                                <span class="name">Selecione um ícone</span>
+                                                <select class="select-input" name="topbar_icon">
+                                                    <option value="">Nenhum</option>
+                                                    <option value="icon-phone">Telefone</option>
+                                                    <option value="icon-email">E-mail</option>
+                                                    <option value="icon-whatsapp">WhatsApp</option>
+                                                    <option value="icon-cart">Carrinho</option>
+                                                    <option value="icon-account">Conta</option>
+                                                    <option value="icon-support">Suporte</option>
+                                                    <option value="icon-search">Busca</option>
+                                                    <option value="icon-star">Estrela</option>
+                                                    <option value="icon-tag">Tag</option>
+                                                    <option value="icon-arrow-right">Seta Direita</option>
+                                                    <option value="icon-arrow-left">Seta Esquerda</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center">
+                                            <span>Cores</span>
+                                        </div>
+                                        <div class="content-section">
+                                            <div class="item">
+                                                <div class="text-color">Cor de fundo</div>
+                                                <div class="colorpicker-theme">               
+                                                    <span class="input-group-addon"><i style="background: #10789B;"></i></span>
+                                                    <input name="topbar_bg_color" placeholder="#" type="text" data-linked-color="topbar_bg_color">
+                                                </div>
+                                                <div class="msg list-colors">Cor de fundo da topbar</div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="text-color">Cor do texto</div>
+                                                <div class="colorpicker-theme">               
+                                                    <span class="input-group-addon"><i style="background: #FFFFFF;"></i></span>
+                                                    <input name="topbar_text_color" placeholder="#" type="text" data-linked-color="topbar_text_color">
+                                                </div>
+                                                <div class="msg list-colors">Cor do texto exibido na topbar</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center">
+                                            <span>Efeito Marquee (texto deslizante)</span>
+                                            <label class="check-drag">
+                                                <input type="checkbox" name="topbar_marquee" value="1">
+                                                <span class="icon"></span>
+                                            </label>
+                                        </div>
+                                        <div class="msg">Quando ativado, o texto será exibido em movimento contínuo (efeito marquee).</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Central de Atendimento -->
+                            <div class="tab-show">
+                                <div class="tab-header">
+                                    <div class="title-col">Central de Atendimento</div>
+                                    <div class="msg">Configure as informações de contato exibidas no dropdown da Central de Atendimento no cabeçalho</div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center item">
+                                            <div class="flex">
+                                                <span>Telefone</span>
+                                            </div>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area">
+                                                <span class="name">Telefone de contato</span>
+                                                <input type="text" placeholder="(11) 9999-9999" name="support_phone">
+                                            </label>
+                                            <div class="msg">Telefone de contato exibido na Central de Atendimento</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center item">
+                                            <div class="flex">
+                                                <span>WhatsApp</span>
+                                            </div>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area">
+                                                <span class="name">Contatos do WhatsApp</span>
+                                                <textarea name="support_whatsapp" placeholder="Nome do Contato|(11) 99999-9999&#10;Outro Contato|(11) 98888-8888" rows="4" style="resize: vertical; font-family: inherit;"></textarea>
+                                            </label>
+                                            <div class="msg">Informe os contatos do WhatsApp. Formato: Nome|Telefone (um por linha). Exemplo: Junior - Vendas|(11) 91234-5678</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center item">
+                                            <div class="flex">
+                                                <span>E-mail</span>
+                                            </div>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area">
+                                                <span class="name">E-mail de contato</span>
+                                                <input type="email" placeholder="contato@loja.com.br" name="support_email">
+                                            </label>
+                                            <div class="msg">E-mail de contato exibido na Central de Atendimento</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="box-section">
+                                        <div class="title flex justify-between align-center item">
+                                            <div class="flex">
+                                                <span>Horário de Atendimento</span>
+                                            </div>
+                                        </div>
+                                        <div class="content-section">
+                                            <label class="input-area">
+                                                <span class="name">Horário</span>
+                                                <input type="text" placeholder="Segunda a Sexta, das 8h às 18h" name="support_hours">
+                                            </label>
+                                            <div class="msg">Horário de atendimento exibido no dropdown</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Product page -->

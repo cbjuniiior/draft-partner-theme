@@ -1,4 +1,18 @@
 <header data-header="scroll" class="header">
+    {% if settings.topbar_active %}
+    {# Barra superior configurável #}
+    <div class="header-topbar{% if settings.topbar_marquee %} header-topbar-marquee{% endif %}">
+        <div class="header-topbar-content">
+            {% if settings.topbar_icon %}
+                <span class="{{ settings.topbar_icon }}" aria-hidden="true"></span>
+            {% endif %}
+            {% if settings.topbar_text %}
+                <div class="header-topbar-text">{{ settings.topbar_text|raw }}</div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    
     <div class="header-top">
         <div class="header-content">
             <button class="header-button mobile" data-toggle="closed" data-target="#menu-mobile" title="Abrir Menu" aria-label="Abrir o menu">
@@ -22,6 +36,78 @@
             </a>
 
             {% element 'snippets/header-search' %}
+
+            {# Central de Atendimento #}
+            <div class="header-support" data-support="dropdown">
+                <span class="icon-support" aria-hidden="true"></span>
+                <span class="support-text">Central de Atendimento</span>
+                <div class="support-dropdown">
+                    {% if settings.support_phone %}
+                        <div class="support-section">
+                            <div class="support-section-title">Compre por telefone</div>
+                            <div class="support-item">
+                                <span class="icon-phone" aria-hidden="true"></span>
+                                <a href="tel:{{ settings.support_phone | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" class="support-link">
+                                    {{ settings.support_phone }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if settings.support_whatsapp %}
+                        <div class="support-section">
+                            <div class="support-section-title">Fale no WhatsApp</div>
+                            {% set whatsapp_text = settings.support_whatsapp %}
+                            {% set whatsapp_lines = whatsapp_text | split("\n") %}
+                            {% for line in whatsapp_lines %}
+                                {% set line_trimmed = line | trim %}
+                                {% if line_trimmed %}
+                                    {% set contact_parts = line_trimmed | split('|') %}
+                                    {% if contact_parts | length > 1 %}
+                                        {% set contact_name = contact_parts[0] | trim %}
+                                        {% set contact_number = contact_parts[1] | trim %}
+                                    {% else %}
+                                        {% set contact_name = '' %}
+                                        {% set contact_number = contact_parts[0] | trim %}
+                                    {% endif %}
+                                    <div class="support-item">
+                                        <span class="icon-whatsapp" aria-hidden="true"></span>
+                                        <div class="support-item-content">
+                                            {% if contact_name %}
+                                                <span class="support-contact-name">{{ contact_name }}</span>
+                                            {% endif %}
+                                            <a href="https://wa.me/{{ contact_number | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" target="_blank" rel="noopener noreferrer" class="support-link">
+                                                {{ contact_number }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if settings.support_email %}
+                        <div class="support-section">
+                            <div class="support-section-title">Envie um e-mail</div>
+                            <div class="support-item">
+                                <span class="icon-email" aria-hidden="true"></span>
+                                <a href="mailto:{{ settings.support_email }}" class="support-link">
+                                    {{ settings.support_email }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    {% if settings.support_hours %}
+                        <div class="support-section">
+                            <div class="support-section-title">HORÁRIO DE ATENDIMENTO</div>
+                            <div class="support-item support-item-hours">
+                                <span class="support-hours">{{ settings.support_hours }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
 
             <div class="header-account">
                 <span class="icon-account" aria-hidden="true"></span>

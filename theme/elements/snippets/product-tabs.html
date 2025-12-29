@@ -100,7 +100,7 @@
                         {%- element 'product/comments' -%}
                     {%- endset -%}
                     <div id="tray-comment-block"></div>
-                    <script> window.commentsBlock = `{{ productComments | raw }}`; </script>
+                    <script type="text/template" id="tray-comments-template">{{ productComments | raw }}</script>
                 {% elseif key == 'downloads' %}
                     {{ tab.content }}
                 {% elseif key == 'properties' %}

@@ -42,8 +42,60 @@
         }
     }
 
+    // Barra superior
+    &-topbar {
+        background-color: var(--topbar_bg_color);
+        color: var(--topbar_text_color);
+        height: 40px;
+        width: 100%;
+        
+        @include small {
+            display: none;
+        }
+        
+        &-content {
+            max-width: $v_width_content_page;
+            margin: 0 auto;
+            padding: 0 0.938rem;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        &-text {
+            color: var(--topbar_text_color);
+            font-size: 0.875rem;
+            white-space: nowrap;
+        }
+        
+        [class^='icon-'],
+        [class*=' icon-'] {
+            color: var(--topbar_text_color);
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        
+        // Efeito Marquee
+        &-marquee {
+            .header-topbar-content {
+                justify-content: flex-start;
+                overflow: hidden;
+            }
+            
+            .header-topbar-text {
+                display: inline-block;
+                animation: marquee 30s linear infinite;
+                will-change: transform;
+            }
+        }
+    }
+
     &-top {
-        background-color: var(--c_header_bg);
+        background-color: #323030; // Cinza escuro Vale Auto Shop
     }
 
     &-content {
@@ -88,6 +140,12 @@
                 display: none;
             }
         }
+        
+        .header-title {
+            @include fontInsert(1.2, 700, #FFFFFF); // Título branco quando não há logo
+            margin: 0;
+            padding: 0;
+        }
     }
 
     &-search {
@@ -97,6 +155,8 @@
         transition: width 0.3s ease-out;
         max-width: 650px;
         width: 100%;
+        border-radius: 6px;
+        overflow: hidden;
 
         @include small {
             order: 1;
@@ -106,47 +166,66 @@
 
         .search {
             &-input {
-                @include fontInsert($fs_header, 600, var(--c_header_text_main));
+                @include fontInsert($fs_header, 600, #1A1A1A); // Texto escuro
                 display: block;
                 padding: 0 58px 0 20px;
-                border-radius: 6px;
-                background: var(--c_general_inverted);
+                border-radius: 6px 0 0 6px;
+                background: #FFFFFF; // Fundo branco
+                border: none;
+                outline: none;
                 width: 100%;
                 height: 52px;
+                box-sizing: border-box;
 
                 @include small {
                     font-size: 0.8rem;
                 }
 
                 &:focus {
-                    box-shadow: inset 0 0 4px var(--c_header_text_secondary);
+                    outline: 2px solid #60BFB8; // Borda turquesa Vale Auto Shop no focus
+                    outline-offset: -2px;
                 }
 
                 &::placeholder {
-                    color: var(--c_header_text_secondary);
-                    opacity: 0.6;
+                    color: #999999; // Placeholder cinza
+                    opacity: 0.8;
                 }
             }
 
             &-button {
-                border-radius: 6px;
+                border-radius: 0 6px 6px 0;
                 position: absolute;
                 width: 58px;
-                height: 100%;
+                height: 52px;
                 top: 0;
                 right: 0;
                 font-size: 20px;
-                color: var(--c_header_icon);
-                background-color: transparent;
+                background-color: #60BFB8; // Fundo turquesa Vale Auto Shop
+                border: none;
+                outline: none;
                 opacity: 1;
                 transition: 0.3s ease-out;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-sizing: border-box;
+
+                .icon-search::before {
+                    color: #FFFFFF !important; // Ícone branco forçado
+                }
 
                 &:hover {
-                    opacity: 0.6;
+                    background-color: #4FA8A0; // Turquesa mais escuro no hover
                 }
 
                 &:active {
-                    opacity: 0.6;
+                    background-color: #4FA8A0;
+                }
+
+                &:focus {
+                    outline: 2px solid #60BFB8;
+                    outline-offset: -2px;
                 }
             }
         }
@@ -287,6 +366,159 @@
         }
     }
 
+    &-support {
+        @extend %flex-center-center;
+        position: relative;
+        margin-right: 1rem;
+        z-index: 1000;
+
+        @include small {
+            display: none;
+        }
+        
+        // Criar área invisível para preencher o gap e manter hover ativo
+        &::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+            z-index: 9999;
+        }
+
+        .icon-support {
+            margin-right: 0.5rem;
+            color: #60BFB8; // Ícone turquesa Vale Auto Shop
+            font-size: 1.6rem;
+        }
+
+        .support-text {
+            @include fontInsert(0.92, 600, #FFFFFF); // Texto branco
+            cursor: pointer;
+        }
+
+        .support-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 50%;
+            transform: translateX(50%) translateY(-10px);
+            margin-top: 12px;
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            min-width: 320px;
+            max-width: 380px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s ease-out;
+            z-index: 10000;
+            overflow: visible;
+            pointer-events: none;
+
+            .support-section {
+                padding: 1.5rem 1.5rem 1rem 1.5rem;
+                border-bottom: 1px solid #F0F0F0;
+
+                &:last-child {
+                    border-bottom: none;
+                    padding-bottom: 1.5rem;
+                }
+
+                &:first-child {
+                    padding-top: 1.5rem;
+                }
+
+                &-title {
+                    @include fontInsert(0.75, 700, #323030);
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    margin-bottom: 0.875rem;
+                    color: #323030;
+                }
+            }
+
+            .support-item {
+                @extend %flex-start-center;
+                margin-bottom: 1rem;
+                align-items: flex-start;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                &-content {
+                    @extend %flex-center-colun;
+                    align-items: flex-start;
+                    flex: 1;
+                }
+
+                &-hours {
+                    align-items: flex-start;
+                    padding-top: 0.25rem;
+                }
+
+                .icon-phone,
+                .icon-email,
+                .icon-whatsapp {
+                    margin-right: 0.875rem;
+                    font-size: 1.375rem;
+                    flex-shrink: 0;
+                    margin-top: 2px;
+                    
+                    &::before {
+                        color: #60BFB8 !important; // Turquesa Vale Auto Shop (verde claro)
+                    }
+                }
+
+                .support-contact-name {
+                    @include fontInsert(0.8125, 600, #323030);
+                    display: block;
+                    margin-bottom: 0.25rem;
+                    line-height: 1.3;
+                }
+
+                .support-link {
+                    @include fontInsert(0.875, 400, #323030);
+                    text-decoration: none;
+                    transition: $transit_default;
+                    display: block;
+                    line-height: 1.4;
+                    word-break: break-word;
+
+                    &:hover {
+                        color: #60BFB8;
+                    }
+                }
+
+                .support-hours {
+                    @include fontInsert(0.875, 400, #616161);
+                    line-height: 1.5;
+                    color: #616161;
+                }
+            }
+        }
+
+        // Manter dropdown aberto quando hover no elemento pai ou no dropdown
+        &:hover {
+            .support-dropdown {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(50%) translateY(0);
+                pointer-events: auto;
+            }
+        }
+        
+        .support-dropdown:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(50%) translateY(0);
+            pointer-events: auto;
+        }
+    }
+
     &-account {
         @extend %flex-center-center;
 
@@ -300,20 +532,21 @@
 
         .icon-account {
             margin-right: 0.5rem;
+            color: #60BFB8; // Ícone turquesa Vale Auto Shop
         }
 
         .account {
             &-access,
             &-link,
             &-separator {
-                color: var(--c_header_text_secondary);
+                color: #FFFFFF; // Texto branco
                 font-size: #{$fs_header}rem;
                 transition: $transit_default;
                 line-height: 15px;
             }
 
             &-text {
-                @include fontInsert(0.92, 600, var(--c_header_text_main));
+                @include fontInsert(0.92, 600, #FFFFFF); // Texto branco
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
@@ -344,9 +577,12 @@
         transition: ease-out 0.2s;
         margin-left: 1rem;
         @extend %flex-center-center;
+        color: #FFFFFF; // Texto branco
 
         .icon-cart {
             margin-right: 0.3rem;
+            color: #60BFB8; // Ícone turquesa Vale Auto Shop
+            font-size: 1.6rem;
         }
 
         &:hover {
@@ -358,15 +594,16 @@
         }
 
         .cart-quantity {
-            @include fontInsert(0.875, 600, var(--c_general_details));
+            @include fontInsert(0.875, 600, #FFFFFF);
             display: inline-block;
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            line-height: 23px;
+            line-height: 20px;
             text-align: center;
             vertical-align: middle;
-            background-color: var(--c_header_cart);
+            background-color: #000000; // Fundo preto para badge
+            margin-left: 5px;
         }
     }
 
@@ -375,7 +612,7 @@
         @extend %flex-center-center;
         position: relative;
         z-index: -1;
-        background-color: var(--c_header_bg);
+        background-color: #323030; // Fundo cinza escuro Vale Auto Shop para menu
         opacity: 1;
         transition: transform 0.3s ease-out 0.3s, opacity 0.5s ease-out;
         padding: 0 0.938rem;
@@ -414,16 +651,22 @@
                 @extend %flex-center-center;
                 @include fontInsert(1.05, 600);
                 height: var(--v_height_header_menu);
+                
+                // Ícones dos itens do menu podem ser adicionados aqui
+                .menu-link::before,
+                .menu-expand::before {
+                    // Espaço para ícones se necessário
+                }
 
                 &:hover > .menu-link,
                 &:hover > .menu-expand {
-                    color: var(--c_general_main);
+                    color: #60BFB8; // Turquesa Vale Auto Shop no hover
                 }
 
                 &:active,
                 .menu-link:active,
                 .menu-expand:active {
-                    color: var(--c_general_main);
+                    color: #60BFB8; // Turquesa Vale Auto Shop no active
                 }
 
                 &:hover .menu-secondLevel {
@@ -446,7 +689,7 @@
                 padding: 0 12px;
                 text-align: center;
                 cursor: pointer;
-                color: var(--c_header_text_main);
+                color: #FFFFFF; // Texto branco no menu
                 z-index: 2;
                 transition: ease-out 0.2s;
             }
@@ -700,7 +943,7 @@
         .button-line {
             width: 100%;
             height: 2px;
-            background-color: var(--c_header_icon);
+            background-color: #60BFB8; // Linhas turquesa Vale Auto Shop no menu mobile
             transition: 0.3s ease-out;
             cursor: pointer;
         }

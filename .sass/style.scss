@@ -472,6 +472,7 @@ $transit_slow: 0.5s ease-out;
 // "Header" height settings for scroll
 @include small {
     :root {
+        --v_height_header_topbar: 0;
         --v_height_header_top: 156px;
         --v_height_header_menu: 0;
         --v_height_header_total: var(--v_height_header_top);
@@ -480,17 +481,19 @@ $transit_slow: 0.5s ease-out;
 
 @include medium {
     :root {
-        --v_height_header_top: 128px;
-        --v_height_header_menu: 72px;
-        --v_height_header_total: calc(var(--v_height_header_top) + var(--v_height_header_menu));
+        --v_height_header_topbar: 40px;
+        --v_height_header_top: 100px;
+        --v_height_header_menu: 60px;
+        --v_height_header_total: calc(var(--v_height_header_topbar) + var(--v_height_header_top) + var(--v_height_header_menu));
     }
 }
 
 @include large {
     :root {
-        --v_height_header_top: 128px;
-        --v_height_header_menu: 72px;
-        --v_height_header_total: calc(var(--v_height_header_top) + var(--v_height_header_menu));
+        --v_height_header_topbar: 40px;
+        --v_height_header_top: 100px;
+        --v_height_header_menu: 60px;
+        --v_height_header_total: calc(var(--v_height_header_topbar) + var(--v_height_header_top) + var(--v_height_header_menu));
     }
 }
 
@@ -503,6 +506,15 @@ $transit_slow: 0.5s ease-out;
     }
     to {
         transform: translateY(0%);
+    }
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
     }
 }
 
