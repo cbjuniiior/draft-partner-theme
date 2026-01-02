@@ -1,4 +1,8 @@
-{% set current_price = product.price_offer > 0 ? product.price_offer : product.price %} {% set old_price = product.price_offer > 0 ? product.price : false %} 
+{% set current_price = product.price_offer > 0 ? product.price_offer : product.price %} 
+{% set old_price = product.price_offer > 0 ? product.price : false %} 
+{% set pix_discount = 0.05 %}
+{% set pix_price = current_price * (1 - pix_discount) %}
+{% set installment_3x = current_price / 3 %}
 
 {% if product.has_variation and product.has_other_prices %}
     <p class="price-titleStarting">{{ Translation('a_partir_de') }}</p>
@@ -9,9 +13,14 @@
         <p class="price-old">de: {{ settings.currency }} {{ old_price | currency }}</p>
     {% endif %}
 
-    <p class="price-current">
-        {{ old_price ? 'por:' }} <em class="value"> {{ settings.currency }} {{ current_price | currency }} </em>
+    <p class="price-pix">
+        <em class="price-pix-value">{{ settings.currency }} {{ pix_price | currency }}</em>
+        <span class="price-pix-label">à vista</span>
     </p>
 
-    <p class="price-installments">{{ product.payment }}</p>
+    <p class="price-installments">
+        <span class="price-installments-label">Ou até 3x de</span>
+        <strong class="price-installments-value"> {{ settings.currency }} {{ installment_3x | currency }}</strong>
+        <span class="price-installments-text"> sem juros</span>
+    </p>
 </div>

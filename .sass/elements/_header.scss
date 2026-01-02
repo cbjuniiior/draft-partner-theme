@@ -46,8 +46,10 @@
     &-topbar {
         background-color: var(--topbar_bg_color);
         color: var(--topbar_text_color);
-        height: 40px;
+        height: auto;
+        min-height: 40px;
         width: 100%;
+        padding: 0.75rem 0;
         
         @include small {
             display: none;
@@ -56,12 +58,12 @@
         &-content {
             max-width: $v_width_content_page;
             margin: 0 auto;
-            padding: 0 0.938rem;
+            padding: 0 1.5rem;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 1rem;
             overflow: hidden;
             position: relative;
         }
@@ -92,10 +94,127 @@
                 will-change: transform;
             }
         }
+
+        // Cupom
+        &-coupon {
+            display: flex !important;
+            align-items: stretch !important;
+            gap: 0 !important;
+            margin-left: 1rem !important;
+            height: 28px !important;
+            flex-shrink: 0 !important;
+            border-radius: 0.375rem !important;
+            overflow: hidden !important;
+
+            .coupon-code {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0 0.875rem !important;
+                min-width: 70px !important;
+                height: 100% !important;
+                background-color: transparent !important;
+                border: 1.5px dashed rgba(255, 255, 255, 0.5) !important;
+                border-right: none !important;
+                border-radius: 0.375rem 0 0 0.375rem !important;
+                font-size: 0.75rem !important;
+                font-weight: 700 !important;
+                letter-spacing: 0.3px !important;
+                color: var(--topbar_text_color) !important;
+                white-space: nowrap !important;
+                box-sizing: border-box !important;
+                line-height: 1 !important;
+                transition: all 0.2s ease !important;
+                text-transform: uppercase !important;
+                opacity: 0.9 !important;
+
+                &:hover {
+                    opacity: 1 !important;
+                    border-color: rgba(255, 255, 255, 0.7) !important;
+                }
+            }
+
+            .coupon-copy-btn {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0 1rem !important;
+                min-width: 70px !important;
+                height: 100% !important;
+                background-color: rgba(0, 0, 0, 0.3) !important;
+                backdrop-filter: blur(4px) !important;
+                -webkit-backdrop-filter: blur(4px) !important;
+                border: 1.5px solid rgba(0, 0, 0, 0.3) !important;
+                border-left: none !important;
+                border-radius: 0 0.375rem 0.375rem 0 !important;
+                font-size: 0.75rem !important;
+                font-weight: 600 !important;
+                letter-spacing: 0.3px !important;
+                color: #ffffff !important;
+                cursor: pointer !important;
+                transition: all 0.2s ease !important;
+                white-space: nowrap !important;
+                box-sizing: border-box !important;
+                margin: 0 !important;
+                outline: none !important;
+                text-decoration: none !important;
+                text-transform: uppercase !important;
+                position: relative !important;
+                overflow: hidden !important;
+
+                &::before {
+                    content: '' !important;
+                    position: absolute !important;
+                    top: 0 !important;
+                    left: -100% !important;
+                    width: 100% !important;
+                    height: 100% !important;
+                    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent) !important;
+                    transition: left 0.5s ease !important;
+                }
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.5) !important;
+                    border-color: rgba(0, 0, 0, 0.5) !important;
+                    transform: translateY(-1px) !important;
+
+                    &::before {
+                        left: 100% !important;
+                    }
+                }
+
+                &:active {
+                    background-color: rgba(0, 0, 0, 0.4) !important;
+                    border-color: rgba(0, 0, 0, 0.4) !important;
+                    transform: translateY(0) !important;
+                }
+
+                &.copied {
+                    background-color: rgba(37, 211, 102, 0.8) !important;
+                    border-color: rgba(37, 211, 102, 0.8) !important;
+                    animation: pulseSuccess 0.3s ease !important;
+
+                    &:hover {
+                        background-color: rgba(32, 186, 90, 0.9) !important;
+                        border-color: rgba(32, 186, 90, 0.9) !important;
+                    }
+                }
+
+                .coupon-copy-text {
+                    display: inline-block !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    line-height: 1 !important;
+                    position: relative !important;
+                    z-index: 1 !important;
+                }
+            }
+        }
     }
 
     &-top {
         background-color: #323030; // Cinza escuro Vale Auto Shop
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1); // Borda inferior para dividir header do menu
     }
 
     &-content {
@@ -578,11 +697,15 @@
         margin-left: 1rem;
         @extend %flex-center-center;
         color: #FFFFFF; // Texto branco
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
         .icon-cart {
-            margin-right: 0.3rem;
             color: #60BFB8; // Ícone turquesa Vale Auto Shop
             font-size: 1.6rem;
+            position: relative;
         }
 
         &:hover {
@@ -594,16 +717,22 @@
         }
 
         .cart-quantity {
-            @include fontInsert(0.875, 600, #FFFFFF);
-            display: inline-block;
-            width: 20px;
-            height: 20px;
+            @include fontInsert(0.75, 700, #FFFFFF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 0.25rem;
             border-radius: 50%;
-            line-height: 20px;
+            line-height: 1;
             text-align: center;
-            vertical-align: middle;
             background-color: #000000; // Fundo preto para badge
-            margin-left: 5px;
+            position: absolute;
+            top: -0.375rem;
+            right: -0.375rem;
+            z-index: 2;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
     }
 
@@ -617,6 +746,7 @@
         transition: transform 0.3s ease-out 0.3s, opacity 0.5s ease-out;
         padding: 0 0.938rem;
         width: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.1); // Borda superior sutil para separar do header
 
         @include small {
             display: none;
@@ -627,6 +757,7 @@
                 max-width: $v_width_content_page;
                 width: 100%;
                 margin: 0 auto;
+                position: relative; // Para que o dropdown possa se posicionar relativamente ao container
             }
 
             &-list .menu-firstLevel > .menu-link,
@@ -642,9 +773,12 @@
                 }
             }
 
-            &-list,
-            &-firstLevel {
+            &-list {
                 position: relative;
+            }
+
+            &-firstLevel {
+                position: static; // Permite que o dropdown se posicione relativamente ao container
             }
 
             &-firstLevel {
@@ -697,41 +831,151 @@
             &-secondLevel {
                 @include fontInsert(1.05, 600);
                 @extend %style-scroll;
-                background-color: var(--c_general_inverted);
-                border-radius: 0 0 0.5rem 0.5rem;
-                box-shadow: 0 4px 8px rgb(0 0 0 / 6%);
+                background-color: #FFFFFF;
+                border-radius: 0;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
                 visibility: hidden;
                 opacity: 0;
-                overflow-y: auto;
-                padding: 2.0625rem 2.5rem;
+                overflow: hidden;
+                padding: 0;
                 position: absolute;
+                left: 50%;
+                transform: translateX(-50%) translateY(40px);
                 top: calc(100% - 40px);
-                transform: translateY(40px);
                 transition: ease-out 0.2s;
-                max-height: 50vh;
-                min-width: 275px;
-                width: auto;
+                max-height: 60vh;
+                width: 100%;
+                max-width: $v_width_content_page;
+                z-index: 1000;
+                border-top: 2px solid #60BFB8; // Borda superior turquesa para destaque
 
-                .secondLevel-item {
-                    border-bottom: $v_border_header;
-                    padding: 24px 0;
+                .menu-dropdown-content {
+                    display: flex;
+                    gap: 0;
+                    height: 100%;
+                    max-height: 60vh;
+                }
+
+                .menu-dropdown-categories {
+                    flex: 1 1 auto;
+                    padding: 2.5rem 3rem;
+                    overflow-y: auto;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                    gap: 2rem;
+                    column-gap: 3rem;
+                }
+
+                .menu-dropdown-products {
+                    flex: 0 0 320px;
+                    background-color: #FAFAFA;
+                    border-left: 1px solid #E5E7EB;
+                    padding: 2rem;
+                    overflow-y: auto;
+                    max-height: 60vh;
+
+                    .menu-products-title {
+                        @include fontInsert(0.875, 700, #323030);
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        margin-bottom: 1.5rem;
+                        color: #323030;
+                        padding-bottom: 0.75rem;
+                        border-bottom: 2px solid #60BFB8;
+                    }
+
+                    .menu-products-list {
+                        list-style: none;
+                        padding: 0;
+                        margin: 0;
+                        display: flex;
+                        flex-direction: column;
+                        gap: 1.25rem;
+                    }
+
+                    .menu-product-item {
+                        margin: 0;
+                        padding: 0;
+                    }
+
+                    .menu-product-link {
+                        display: flex;
+                        gap: 1rem;
+                        text-decoration: none;
+                        color: inherit;
+                        transition: transform 0.2s ease;
+
+                        &:hover {
+                            transform: translateX(4px);
+                        }
+                    }
+
+                    .menu-product-image {
+                        width: 80px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 8px;
+                        background-color: #FFFFFF;
+                        flex-shrink: 0;
+                        border: 1px solid #E5E7EB;
+                    }
+
+                    .menu-product-info {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        gap: 0.5rem;
+                    }
+
+                    .menu-product-name {
+                        @include fontInsert(0.8125, 600, #323030);
+                        line-height: 1.4;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .menu-product-price {
+                        .menu-price-current {
+                            @include fontInsert(0.9375, 700, #60BFB8);
+                            color: #60BFB8;
+                        }
+                    }
+                }
+
+                .menu-dropdown-categories .secondLevel-item {
+                    border-bottom: 1px solid #F0F0F0;
+                    padding: 1.25rem 0;
+                    transition: background-color 0.2s ease;
+                    min-width: 0; // Permite que o grid funcione corretamente
 
                     &:first-child {
-                        padding-top: 0px;
+                        padding-top: 1.25rem; // Mesmo padding que os demais
                     }
 
                     &:last-child {
                         border-bottom: 0px;
                         padding-bottom: 0px;
                     }
+
+                    &:hover {
+                        background-color: #FAFAFA;
+                    }
                 }
 
                 .menu-link {
-                    color: var(--c_general_text1);
+                    color: #323030;
                     transition: $transit_default;
+                    font-weight: 600;
+                    font-size: 0.875rem;
+                    padding: 0.5rem 0;
+                    display: block;
 
                     &:hover {
-                        color: var(--c_general_main);
+                        color: #60BFB8; // Turquesa Vale Auto Shop no hover
                     }
                 }
             }
@@ -766,6 +1010,37 @@
     }
 }
 
+// Overlay quando o dropdown do menu está aberto
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+    pointer-events: none;
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+    }
+}
+
+// Garantir que o dropdown e o menu não sejam bloqueados pelo overlay
+.header-menu {
+    position: relative;
+    z-index: 1001; // Acima do overlay
+
+    .menu-secondLevel {
+        pointer-events: auto; // Garantir que o dropdown seja clicável mesmo com overlay
+    }
+}
+
 /// Saarch
 
 .header--fixed .header-menu {
@@ -777,6 +1052,19 @@
             transform: translateY(0);
             box-shadow: 0 1px 5px rgb(0 0 0 / 6%);
         }
+    }
+}
+
+// Animação para feedback de cópia do cupom
+@keyframes pulseSuccess {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 

@@ -1,0 +1,270 @@
+// Categories Carousel - Carrossel de Categorias
+.categories-carousel-section {
+    padding: 3rem 0;
+    background-color: #ffffff;
+
+    @include small {
+        padding: 2rem 0;
+    }
+}
+
+.categories-carousel-wrapper {
+    max-width: $v_width_content_page;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+
+    @include small {
+        padding: 0 1rem;
+    }
+}
+
+.categories-carousel-title {
+    @include fontInsert(1.75, 700, #111827);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: -0.02em;
+
+    @include small {
+        font-size: 1.375rem;
+        margin-bottom: 1.5rem;
+    }
+
+    @include medium {
+        font-size: 1.5rem;
+    }
+}
+
+.categories-carousel-container {
+    position: relative;
+    overflow: hidden;
+
+    @include small {
+        padding: 0 3rem; // Espaço para os botões de navegação
+    }
+}
+
+.categories-carousel-track {
+    display: flex;
+    gap: 1.5rem;
+    transition: transform 0.3s ease;
+
+    @include small {
+        gap: 1rem;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    @include medium {
+        gap: 1.25rem;
+    }
+
+    @include large {
+        gap: 2rem;
+    }
+}
+
+.category-carousel-item {
+    flex: 0 0 auto;
+    width: calc((100% - (5 * 1.5rem)) / 6); // 6 itens por linha no desktop
+    padding-top: 4px; // Espaço para o hover não cortar
+    
+    @include small {
+        width: calc((100% - 0rem) / 2.5); // 2.5 itens visíveis no mobile
+        scroll-snap-align: center;
+        min-width: 120px;
+        padding-top: 4px;
+    }
+
+    @include medium {
+        width: calc((100% - (3 * 1.25rem)) / 4); // 4 itens por linha no tablet
+        padding-top: 4px;
+    }
+
+    @include large {
+        width: calc((100% - (5 * 2rem)) / 6); // 6 itens por linha no desktop
+        padding-top: 4px;
+    }
+}
+
+.category-carousel-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    padding-top: 4px; // Espaço para o hover não cortar a parte superior
+
+    &:hover {
+        transform: translateY(-4px);
+        
+        .category-carousel-image img {
+            transform: scale(1.05);
+        }
+
+        .category-carousel-name {
+            color: #60BFB8;
+        }
+    }
+}
+
+.category-carousel-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    position: relative;
+
+    @include small {
+        margin-bottom: 0.5rem;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+        border-radius: 50%;
+    }
+}
+
+.category-carousel-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #111827;
+    color: #ffffff;
+    border-radius: 50%;
+
+    .icon-tag {
+        font-size: 2.5rem;
+        opacity: 0.5;
+
+        @include small {
+            font-size: 2rem;
+        }
+    }
+}
+
+.category-carousel-name {
+    @include fontInsert(0.875, 600, #111827);
+    text-align: center;
+    transition: color 0.2s ease;
+    line-height: 1.4;
+    word-break: break-word;
+    hyphens: auto;
+
+    @include small {
+        font-size: 0.8125rem;
+    }
+}
+
+// Botões de navegação
+.categories-carousel-nav {
+    display: none;
+
+    @include medium {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        pointer-events: all;
+        transition: all 0.2s ease;
+        z-index: 3;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &:hover:not(.disabled) {
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        &:active:not(.disabled) {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .icon-arrow-left,
+        .icon-arrow-right {
+            font-size: 1rem;
+            color: #111827;
+        }
+    }
+
+    @include small {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.95);
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        pointer-events: all;
+        transition: all 0.2s ease;
+        z-index: 3;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        &:hover:not(.disabled) {
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-50%) scale(1.05);
+        }
+
+        &:active:not(.disabled) {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .icon-arrow-left,
+        .icon-arrow-right {
+            font-size: 1rem;
+            color: #111827;
+        }
+    }
+
+    &.categories-carousel-prev {
+        left: 0.5rem;
+    }
+
+    &.categories-carousel-next {
+        right: 0.5rem;
+    }
+}
+

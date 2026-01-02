@@ -32,25 +32,59 @@
 
                 {% if category.children %}
                     <ul class="menu-secondLevel menu-subList" role="menu">
-                        {% for level2 in category.children %}
-                            <li class="secondLevel-item {{ level2.children ? 'subList-group' }}" role="none">
-                                <a class="menu-link" role="menuitem" href="{{ level2.link }}" title="{{ level2.name }}">
-                                    {{ level2.name }}
-                                </a>
+                        <div class="menu-dropdown-content">
+                            <div class="menu-dropdown-categories">
+                                {% for level2 in category.children %}
+                                    <li class="secondLevel-item {{ level2.children ? 'subList-group' }}" role="none">
+                                        <a class="menu-link" role="menuitem" href="{{ level2.link }}" title="{{ level2.name }}">
+                                            {{ level2.name }}
+                                        </a>
 
-                                {% if level2.children %}
-                                    <ul class="menu-thirdLevel menu-subList" role="menu">
-                                        {% for level3 in level2.children %}
-                                            <li role="none">
-                                                <a class="menu-link" role="menuitem" href="{{ level3.link }}" title="{{ level3.name }}">
-                                                    {{ level3.name }}
+                                        {% if level2.children %}
+                                            <ul class="menu-thirdLevel menu-subList" role="menu">
+                                                {% for level3 in level2.children %}
+                                                    <li role="none">
+                                                        <a class="menu-link" role="menuitem" href="{{ level3.link }}" title="{{ level3.name }}">
+                                                            {{ level3.name }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                            </div>
+                            <div class="menu-dropdown-products">
+                                {% set category_products = Products({
+                                    'categories': [category.id],
+                                    'filter': ['available'],
+                                    'limit': 4,
+                                    'order': 'rand'
+                                }) %}
+                                {% if category_products | length > 0 %}
+                                    <div class="menu-products-title">Produtos em Destaque</div>
+                                    <ul class="menu-products-list">
+                                        {% for product in category_products %}
+                                            <li class="menu-product-item">
+                                                <a href="{{ product.link }}" class="menu-product-link">
+                                                    <img src="{{ product.images[0].large }}" alt="{{ product.name }}" class="menu-product-image" loading="lazy">
+                                                    <div class="menu-product-info">
+                                                        <div class="menu-product-name">{{ product.name }}</div>
+                                                        <div class="menu-product-price">
+                                                            {% if product.price_offer > 0 %}
+                                                                <span class="menu-price-current">{{ settings.currency }} {{ product.price_offer | currency }}</span>
+                                                            {% else %}
+                                                                <span class="menu-price-current">{{ settings.currency }} {{ product.price | currency }}</span>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
                                                 </a>
                                             </li>
                                         {% endfor %}
                                     </ul>
                                 {% endif %}
-                            </li>
-                        {% endfor %}
+                            </div>
+                        </div>
                     </ul>
                 {% endif %}
             </li>

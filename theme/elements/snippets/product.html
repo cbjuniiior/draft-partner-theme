@@ -34,14 +34,42 @@
         </a>
 
         {% element 'snippets/product-tags' { 'product': product } %}
+
+        {% if product.price_offer > 0 and product.end_promotion and product.end_promotion != '0000-00-00' %}
+            <div class="product-timer" data-end-date="{{ product.end_promotion }}">
+                <div class="product-timer-label">OFERTA TERMINA EM:</div>
+                <div class="product-timer-content">
+                    <div class="product-timer-item">
+                        <span class="product-timer-value product-timer-days">0</span>
+                        <span class="product-timer-unit">Dias</span>
+                    </div>
+                    <div class="product-timer-item">
+                        <span class="product-timer-value product-timer-hours">0</span>
+                        <span class="product-timer-unit">Horas</span>
+                    </div>
+                    <div class="product-timer-item">
+                        <span class="product-timer-value product-timer-minutes">0</span>
+                        <span class="product-timer-unit">Min</span>
+                    </div>
+                    <div class="product-timer-item">
+                        <span class="product-timer-value product-timer-seconds">0</span>
+                        <span class="product-timer-unit">Seg</span>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
-    <a class="product-info" href="{{ product.link }}">
-        {% if pages.current == 'catalog' %}
-            <h2 class="product-name">{{ product.name }}</h2>
-        {% else %}
-            <h4 class="product-name">{{ product.name }}</h4>
-        {% endif %} {% element 'snippets/product-rating' { 'review': product.ranking } %}
+    <div class="product-info">
+        <a href="{{ product.link }}" class="product-info-link">
+            {% if pages.current == 'catalog' %}
+                <h2 class="product-name">{{ product.name }}</h2>
+            {% else %}
+                <h4 class="product-name">{{ product.name }}</h4>
+            {% endif %}
+        </a>
+        
+        {% element 'snippets/star_ranking' { 'review': product.ranking } %}
 
         <div class="product-price">
             {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %} 
@@ -62,15 +90,38 @@
                 } %}
             {% endif %}
         </div>
-    </a>
+    </div>
 
-    <button
-        class="product-button {{ not product.available and not (product.stock > 0 or settings.without_stock_sale) and product.upon_request or product.stock
-        <= 0 or product.upon_request ? 'u-marginNone' }}"
-        type="button" aria-label="Ver Produto"
-    >
-        {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
-            <a class="button2" href="{{ product.link }}"> Ver produto </a>
-        {% endif %}
-    </button>
+    {% if product.available and (product.stock > 0 or settings.without_stock_sale) and not product.upon_request %}
+        <div class="product-actions vale-product-actions">
+            <form method="post" action="{{ links.cart_add ~ product.id }}" class="vale-product-buy-form" data-product-id="{{ product.id }}" data-app="product.buy-form">
+                <div class="product-buy-group vale-product-buy-group">
+                    <div class="product-quantity vale-product-quantity" data-product-id="{{ product.id }}" data-app="product.quantity">
+                        <button type="button" class="vale-qty-btn vale-qty-minus" onclick="valeUpdateQuantity({{ product.id }}, -1)" aria-label="Diminuir quantidade">-</button>
+                        <input type="number" class="vale-qty-input" id="vale-qty-{{ product.id }}" name="quant" value="1" min="1" max="{{ product.stock }}" size="1" maxlength="5" aria-label="Quantidade">
+                        <button type="button" class="vale-qty-btn vale-qty-plus" onclick="valeUpdateQuantity({{ product.id }}, 1)" aria-label="Aumentar quantidade">+</button>
+                    </div>
+                    <button type="submit" class="button2 vale-product-buy-btn" id="vale-buy-{{ product.id }}" data-product-id="{{ product.id }}">Comprar</button>
+                </div>
+            </form>
+            {% if settings.support_whatsapp %}
+                {% set whatsapp_text = settings.support_whatsapp %}
+                {% set whatsapp_lines = whatsapp_text | split("\n") %}
+                {% set first_whatsapp = whatsapp_lines[0] | split("|") %}
+                {% set whatsapp_number = first_whatsapp[1] | default(first_whatsapp[0]) | replace({'(': '', ')': '', '-': '', ' ': ''}) %}
+                {% set product_message = 'Olá! Tenho interesse no produto: ' ~ product.name ~ ' - ' ~ product.link %}
+                <a href="https://api.whatsapp.com/send?l=pt&phone=55{{ whatsapp_number }}&text={{ product_message | url_encode }}" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="vale-whatsapp-btn">
+                    <span class="icon-whatsapp" aria-hidden="true"></span>
+                    <span class="whatsapp-text">Comprar pelo WhatsApp</span>
+                </a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="product-actions vale-product-actions">
+            <a href="{{ product.link }}" class="button2 vale-product-view-btn">Ver produto</a>
+        </div>
+    {% endif %}
 </div>

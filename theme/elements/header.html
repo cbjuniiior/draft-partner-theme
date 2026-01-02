@@ -1,18 +1,23 @@
 <header data-header="scroll" class="header">
     {% if settings.topbar_active %}
     {# Barra superior configurável #}
-    <div class="header-topbar{% if settings.topbar_marquee %} header-topbar-marquee{% endif %}">
+    <div class="header-topbar">
         <div class="header-topbar-content">
-            {% if settings.topbar_icon %}
-                <span class="{{ settings.topbar_icon }}" aria-hidden="true"></span>
-            {% endif %}
             {% if settings.topbar_text %}
                 <div class="header-topbar-text">{{ settings.topbar_text|raw }}</div>
+            {% endif %}
+            {% if settings.topbar_coupon_active and settings.topbar_coupon_code %}
+                <div class="header-topbar-coupon">
+                    <div class="coupon-code">{{ settings.topbar_coupon_code }}</div>
+                    <button type="button" class="coupon-copy-btn" data-coupon="{{ settings.topbar_coupon_code }}">
+                        <span class="coupon-copy-text">Copiar</span>
+                    </button>
+                </div>
             {% endif %}
         </div>
     </div>
     {% endif %}
-    
+
     <div class="header-top">
         <div class="header-content">
             <button class="header-button mobile" data-toggle="closed" data-target="#menu-mobile" title="Abrir Menu" aria-label="Abrir o menu">
@@ -27,7 +32,7 @@
                         alt="{{ store.name }}"
                         width="222" height="55"
                     />
-                {% endif %} 
+                {% endif %}
                 {% if 'home' in pages.current %}
                     <h1 class="header-title">{{ store.name }}</h1>
                 {% else %}
@@ -46,14 +51,14 @@
                         <div class="support-section">
                             <div class="support-section-title">Compre por telefone</div>
                             <div class="support-item">
-                                <span class="icon-phone" aria-hidden="true"></span>
-                                <a href="tel:{{ settings.support_phone | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" class="support-link">
+                                <span class="icon-whatsapp" aria-hidden="true"></span>
+                                <a href="https://wa.me/55{{ settings.support_phone | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" target="_blank" rel="noopener noreferrer" class="support-link">
                                     {{ settings.support_phone }}
                                 </a>
                             </div>
                         </div>
                     {% endif %}
-                    
+
                     {% if settings.support_whatsapp %}
                         <div class="support-section">
                             <div class="support-section-title">Fale no WhatsApp</div>
@@ -85,7 +90,7 @@
                             {% endfor %}
                         </div>
                     {% endif %}
-                    
+
                     {% if settings.support_email %}
                         <div class="support-section">
                             <div class="support-section-title">Envie um e-mail</div>
@@ -97,7 +102,7 @@
                             </div>
                         </div>
                     {% endif %}
-                    
+
                     {% if settings.support_hours %}
                         <div class="support-section">
                             <div class="support-section-title">HORÁRIO DE ATENDIMENTO</div>
@@ -113,7 +118,7 @@
                 <span class="icon-account" aria-hidden="true"></span>
 
                 <div class="tray-hide logged" data-logged-user="true">
-                    <span class="account-text">Ol&aacute;, <span data-customer="name"></span></span>
+                    <span class="account-text">Olá, <span data-customer="name"></span></span>
                     <div class="account-access">
                         <a class="account-link" href="{{ links.central }}" title="Minha Conta">Minha conta</a>
                         <span class="account-separator">/</span>
@@ -138,4 +143,5 @@
     </div>
 
     <nav data-menu="scroll" class="header-menu">{% element 'snippets/menu' %}</nav>
+    <div class="menu-overlay"></div>
 </header>

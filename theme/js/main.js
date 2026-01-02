@@ -201,7 +201,7 @@
 
                 $('.dep_item').addClass('swiper-slide');
                 $(`${targetElement} .dep_lista`).addClass('swiper-wrapper').wrap('<div class="swiper"></div>');
-                $(`${targetElement} .swiper`).append(`           
+                $(`${targetElement} .swiper`).append(`
                     <div class="swiper-pagination"></div>
                 `);
 
@@ -347,6 +347,11 @@
                     inputQtd.val(valueQtd);
                 }
             });
+        },
+
+        getQuantityChangeOnProductCard: function () {
+            // Esta função não é mais necessária pois usamos onclick inline
+            // Mantida para compatibilidade
         },
 
         generateShippingToProduct: function () {
@@ -850,15 +855,15 @@
         /* --- End Product Page Organization --- */
         /* Beginning Pages Tray Organization */
         processRteVideoAndTable: function () {
-            $(`.col-panel .tablePage, 
-               .page-extra .page-content table, 
-               .page-extras .page-content table, 
+            $(`.col-panel .tablePage,
+               .page-extra .page-content table,
+               .page-extras .page-content table,
                .board_htm table,
                .rte table,
                .page-noticia table
             `).wrap('<div class="table-overflow"></div>');
 
-            $(`.page-noticia iframe[src*="youtube.com/embed"], 
+            $(`.page-noticia iframe[src*="youtube.com/embed"],
                .page-noticia iframe[src*="player.vimeo"],
                .board_htm iframe[src*="youtube.com/embed"],
                .board_htm iframe[src*="player.vimeo"],
@@ -904,20 +909,20 @@
 
             $.each(items, function (index, item) {
                 if (this.link) {
-                    breadcrumb += `                       
+                    breadcrumb += `
                         <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                             <a itemprop="item" class="breadcrumb-link" href="${item.link}">
                                 <span itemprop="name">${item.text}</span>
                             </a>
                             <meta itemprop="position" content="${index + 1}" />
-                        </li>   
+                        </li>
                         `;
                 } else {
                     breadcrumb += `
                         <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
                             <span itemprop="name">${item.text}</span>
                             <meta itemprop="position" content="${index + 1}" />
-                        </li>          
+                        </li>
                     `;
                 }
             });
@@ -1123,6 +1128,56 @@
         updateCartTotal: function () {
             $('[data-cart="amount"]').text($('.cart-preview-item').length);
         },
+
+        copyCouponCode: function () {
+            $('.coupon-copy-btn').on('click', function (event) {
+                event.preventDefault();
+                const button = $(this);
+                const couponCode = button.data('coupon');
+                const copyText = button.find('.coupon-copy-text');
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(couponCode).then(function () {
+                        copyText.text('Copiado!');
+                        button.addClass('copied');
+
+                        setTimeout(function () {
+                            copyText.text('Copiar');
+                            button.removeClass('copied');
+                        }, 2000);
+                    }).catch(function (err) {
+                        console.error('Erro ao copiar cupom:', err);
+                        fallbackCopy(couponCode, button, copyText);
+                    });
+                } else {
+                    fallbackCopy(couponCode, button, copyText);
+                }
+            });
+
+            function fallbackCopy(couponCode, button, copyText) {
+                const textArea = document.createElement('textarea');
+                textArea.value = couponCode;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    copyText.text('Copiado!');
+                    button.addClass('copied');
+
+                    setTimeout(function () {
+                        copyText.text('Copiar');
+                        button.removeClass('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Erro ao copiar cupom:', err);
+                }
+
+                document.body.removeChild(textArea);
+            }
+        },
     };
 
     // Execution of Functions
@@ -1140,6 +1195,8 @@
             theme.scrollHidesMenu();
             theme.mainMenuMobile();
             theme.libMaskInit();
+            theme.copyCouponCode();
+            theme.getQuantityChangeOnProductCard();
         }, 20);
 
         if ($('html').hasClass('page-home')) {
@@ -1186,5 +1243,421 @@
         } else if ($('html').hasClass('page-extra')) {
             theme.insertBreadcrumbNavigationInPage('Sistema de Afiliados', true);
         }
+    });
+
+    // Funções globais para controle de quantidade nos cards de produto
+    window.valeUpdateQuantity = function(productId, change) {
+        const input = document.getElementById('vale-qty-' + productId);
+        if (!input) return;
+        
+        let currentValue = parseInt(input.value, 10) || 1;
+        const maxValue = parseInt(input.getAttribute('max'), 10) || 999;
+        const minValue = parseInt(input.getAttribute('min'), 10) || 1;
+        
+        currentValue += change;
+        currentValue = Math.max(minValue, Math.min(currentValue, maxValue));
+        
+        input.value = currentValue;
+        
+        // Disparar evento change
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
+        
+        // Atualizar URL do botão
+        valeUpdateBuyUrl(productId);
+    };
+
+    window.valeUpdateBuyUrl = function(productId) {
+        // Função mantida para compatibilidade, mas não é mais necessária
+        // pois usamos valeAddToCart que intercepta o clique
+    };
+
+    // Função para atualizar quantidade (mantém a mesma)
+    window.valeUpdateQuantity = function(productId, change) {
+        const input = document.getElementById('vale-qty-' + productId);
+        if (!input) return;
+        
+        let currentValue = parseInt(input.value, 10) || 1;
+        const maxValue = parseInt(input.getAttribute('max'), 10) || 999;
+        const minValue = parseInt(input.getAttribute('min'), 10) || 1;
+        
+        currentValue += change;
+        currentValue = Math.max(minValue, Math.min(currentValue, maxValue));
+        
+        input.value = currentValue;
+        
+        // Disparar evento change
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
+    };
+
+    // Interceptar submit do formulário para garantir que a quantidade seja enviada
+    $(document).on('submit', '.vale-product-buy-form', function(e) {
+        const form = $(this);
+        const productId = form.data('product-id');
+        const input = document.getElementById('vale-qty-' + productId);
+        
+        if (!input) {
+            console.error('Input de quantidade não encontrado para produto:', productId);
+            e.preventDefault();
+            return false;
+        }
+        
+        let quantity = parseInt(input.value, 10);
+        if (isNaN(quantity) || quantity < 1) {
+            quantity = 1;
+            input.value = quantity;
+        }
+        
+        // Garantir que o input tenha o valor correto antes do submit
+        // O formulário POST já enviará o campo 'quant' automaticamente
+        
+        console.log('Submetendo formulário:', {
+            productId: productId,
+            quantity: quantity,
+            formAction: form.attr('action')
+        });
+        
+        // Deixar o formulário ser submetido normalmente (POST)
+        return true;
+    });
+
+    // Banner Régua - Carrossel Mobile
+    function initBannerReguaCarousel() {
+        const bannerInfo = $('.banner-info');
+        if (!bannerInfo.length) return;
+
+        const container = bannerInfo.find('.banner-info-container');
+        const prevBtn = bannerInfo.find('.banner-info-nav-prev');
+        const nextBtn = bannerInfo.find('.banner-info-nav-next');
+        const items = container.find('.item');
+        
+        if (items.length <= 2) {
+            // Se tiver 2 ou menos itens, esconder os botões
+            bannerInfo.find('.banner-info-nav').hide();
+            return;
+        }
+
+        let currentIndex = 0;
+        const itemsPerView = 1;
+        const totalSlides = Math.ceil(items.length / itemsPerView);
+
+        function updateButtons() {
+            // No loop automático, sempre permitir navegação
+            if (totalSlides <= 1) {
+                prevBtn.addClass('disabled').prop('disabled', true);
+                nextBtn.addClass('disabled').prop('disabled', true);
+            } else {
+                // Em loop, os botões sempre ficam habilitados
+                prevBtn.removeClass('disabled').prop('disabled', false);
+                nextBtn.removeClass('disabled').prop('disabled', false);
+            }
+        }
+
+        function scrollToSlide(index) {
+            const containerWidth = container.outerWidth();
+            const scrollPosition = index * (containerWidth / itemsPerView);
+            
+            // Garantir que o scroll seja apenas horizontal
+            const currentScrollTop = $(window).scrollTop();
+            
+            container.animate({
+                scrollLeft: scrollPosition
+            }, 300, function() {
+                // Restaurar a posição vertical do scroll da página após a animação
+                $(window).scrollTop(currentScrollTop);
+            });
+            
+            currentIndex = index;
+            updateButtons();
+        }
+
+        prevBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            stopAutoPlay();
+            if (currentIndex > 0) {
+                scrollToSlide(currentIndex - 1);
+            } else {
+                // Loop: voltar para o último slide
+                scrollToSlide(totalSlides - 1);
+            }
+            // Retomar após 5 segundos
+            setTimeout(function() {
+                startAutoPlay();
+            }, 5000);
+            return false;
+        });
+
+        nextBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            stopAutoPlay();
+            if (currentIndex < totalSlides - 1) {
+                scrollToSlide(currentIndex + 1);
+            } else {
+                // Loop: voltar para o primeiro slide
+                scrollToSlide(0);
+            }
+            // Retomar após 5 segundos
+            setTimeout(function() {
+                startAutoPlay();
+            }, 5000);
+            return false;
+        });
+
+        // Inicializar estado dos botões
+        updateButtons();
+
+        // Auto-play (loop automático)
+        let autoPlayInterval = null;
+        const autoPlayDelay = 4000; // 4 segundos entre slides
+
+        function startAutoPlay() {
+            // Limpar intervalo anterior se existir
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+            }
+
+            // Só iniciar auto-play se houver mais de 1 slide
+            if (totalSlides > 1) {
+                autoPlayInterval = setInterval(function() {
+                    if (currentIndex < totalSlides - 1) {
+                        scrollToSlide(currentIndex + 1);
+                    } else {
+                        // Voltar para o primeiro slide (loop)
+                        scrollToSlide(0);
+                    }
+                }, autoPlayDelay);
+            }
+        }
+
+        function stopAutoPlay() {
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
+
+        // Iniciar auto-play
+        startAutoPlay();
+
+        // Pausar auto-play ao interagir com o carrossel
+        container.on('mouseenter touchstart', function() {
+            stopAutoPlay();
+        });
+
+        // Retomar auto-play ao sair
+        container.on('mouseleave touchend', function() {
+            startAutoPlay();
+        });
+
+        // Pausar auto-play ao clicar nos botões
+        prevBtn.add(nextBtn).on('click', function() {
+            stopAutoPlay();
+            // Retomar após 5 segundos
+            setTimeout(function() {
+                startAutoPlay();
+            }, 5000);
+        });
+
+        // Suporte para swipe touch
+        let startX = 0;
+        let scrollLeft = 0;
+        let isDown = false;
+
+        container.on('mousedown touchstart', function(e) {
+            isDown = true;
+            startX = (e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX) - container.offset().left;
+            scrollLeft = container.scrollLeft();
+        });
+
+        container.on('mouseleave touchend', function() {
+            isDown = false;
+        });
+
+        container.on('mouseup touchcancel', function() {
+            isDown = false;
+        });
+
+        container.on('mousemove touchmove', function(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            stopAutoPlay(); // Pausar auto-play durante o swipe
+            const x = (e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX) - container.offset().left;
+            const walk = (x - startX) * 2;
+            container.scrollLeft(scrollLeft - walk);
+        });
+
+        // Retomar auto-play após o swipe
+        container.on('mouseup touchend touchcancel', function() {
+            if (isDown) {
+                setTimeout(function() {
+                    startAutoPlay();
+                }, 2000); // Retomar após 2 segundos
+            }
+        });
+    }
+
+    // Inicializar timer de produtos em oferta
+    function initProductTimers() {
+        $('.product-timer[data-end-date]').each(function() {
+            const $timer = $(this);
+            const endDateStr = $timer.attr('data-end-date');
+            
+            if (!endDateStr || endDateStr === '0000-00-00') {
+                $timer.hide();
+                return;
+            }
+            
+            // Parse da data (formato: YYYY-MM-DD)
+            const endDate = new Date(endDateStr + 'T23:59:59');
+            
+            function updateTimer() {
+                const now = new Date();
+                const diff = endDate - now;
+                
+                if (diff <= 0) {
+                    $timer.hide();
+                    return;
+                }
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                $timer.find('.product-timer-days').text(days);
+                $timer.find('.product-timer-hours').text(hours);
+                $timer.find('.product-timer-minutes').text(minutes);
+                $timer.find('.product-timer-seconds').text(seconds);
+            }
+            
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        });
+    }
+
+    // Menu overlay control
+    function initMenuOverlay() {
+        const $menuItems = $('.menu-firstLevel');
+        const $overlay = $('.menu-overlay');
+        let hoverTimeout;
+
+        $menuItems.on('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            $overlay.addClass('active');
+        });
+
+        $menuItems.on('mouseleave', function() {
+            // Delay para evitar fechar quando mover para o dropdown
+            hoverTimeout = setTimeout(function() {
+                $overlay.removeClass('active');
+            }, 100);
+        });
+
+        // Manter overlay ativo quando hover no dropdown
+        $('.menu-secondLevel').on('mouseenter', function() {
+            clearTimeout(hoverTimeout);
+            $overlay.addClass('active');
+        });
+
+        $('.menu-secondLevel').on('mouseleave', function() {
+            hoverTimeout = setTimeout(function() {
+                $overlay.removeClass('active');
+            }, 100);
+        });
+
+        // Fechar overlay ao clicar nele
+        $overlay.on('click', function() {
+            $(this).removeClass('active');
+            $menuItems.find('.menu-secondLevel').css({
+                'opacity': '0',
+                'visibility': 'hidden'
+            });
+        });
+    }
+
+    // Categories Carousel - Carrossel de Categorias
+    function initCategoriesCarousel() {
+        const categoriesSection = $('.categories-carousel-section');
+        if (!categoriesSection.length) return;
+
+        const container = categoriesSection.find('.categories-carousel-container');
+        const track = categoriesSection.find('.categories-carousel-track');
+        const prevBtn = categoriesSection.find('.categories-carousel-prev');
+        const nextBtn = categoriesSection.find('.categories-carousel-next');
+        const items = track.find('.category-carousel-item');
+
+        if (items.length <= 6) {
+            // Se tiver 6 ou menos itens no desktop, esconder os botões
+            prevBtn.hide();
+            nextBtn.hide();
+            return;
+        }
+
+        let currentIndex = 0;
+        const itemsPerView = 6; // 6 itens no desktop
+        const totalSlides = Math.ceil(items.length / itemsPerView);
+
+        function updateButtons() {
+            if (totalSlides <= 1) {
+                prevBtn.addClass('disabled').prop('disabled', true);
+                nextBtn.addClass('disabled').prop('disabled', true);
+            } else {
+                prevBtn.removeClass('disabled').prop('disabled', false);
+                nextBtn.removeClass('disabled').prop('disabled', false);
+            }
+        }
+
+        function scrollToSlide(index) {
+            const itemWidth = items.first().outerWidth(true);
+            const scrollPosition = index * (itemWidth * itemsPerView);
+            
+            const currentScrollTop = $(window).scrollTop();
+            
+            track.animate({
+                scrollLeft: scrollPosition
+            }, 300, function() {
+                $(window).scrollTop(currentScrollTop);
+            });
+            
+            currentIndex = index;
+            updateButtons();
+        }
+
+        prevBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIndex > 0) {
+                scrollToSlide(currentIndex - 1);
+            }
+            return false;
+        });
+
+        nextBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIndex < totalSlides - 1) {
+                scrollToSlide(currentIndex + 1);
+            }
+            return false;
+        });
+
+        updateButtons();
+    }
+
+    // Inicializar quando o DOM estiver pronto
+    $(document).ready(function() {
+        initBannerReguaCarousel();
+        initProductTimers();
+        initMenuOverlay(); // Initialize menu overlay
+        initCategoriesCarousel(); // Initialize categories carousel
+    });
+
+    // Re-inicializar em resize (caso mude de mobile para desktop)
+    $(window).on('resize', function() {
+        initBannerReguaCarousel();
+        initCategoriesCarousel();
     });
 })(jQuery);

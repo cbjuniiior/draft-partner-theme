@@ -32,7 +32,8 @@
 
     {% if discount %}
         <div class="tag-floating tag-percentageDiscount">
-            -{{ discount| number_format }}%
+            <span class="tag-discount-value">{{ discount| number_format }}%</span>
+            <span class="tag-discount-label">OFF</span>
         </div>
     {% endif %} 
 
@@ -41,16 +42,24 @@
     <div class="product-tag" data-tags-count="{{ tags_count }}">
         {% set replaceTags = {'src=': 'width="' ~ v_width ~ '" height="26" alt="Selo do produto" src='} %} 
         
-        {% if product.new and Image('new') %}
+        {% if product.new %}
             {% set position = position + 1 %} 
-            <div class="tag-new tag{{ show_double_tag == 0 ? ' tag--full' }}{{show_double_tag == 1 and (odd_amount and position == tags_count) ? ' tag--center' }}">
-                {{ Image('new') | replace(replaceTags) }}
+            <div class="tag tag-new">
+                {% if Image('new') %}
+                    {{ Image('new') | replace(replaceTags) }}
+                {% else %}
+                    LANÇAMENTO
+                {% endif %}
             </div>
         {% endif %} 
-        {% if product.featured and Image('featured') %}
+        {% if product.featured %}
             {% set position = position + 1 %}
-            <div class="tag-featured tag{{ show_double_tag == 0 ? ' tag--full' }}{{show_double_tag == 1 and (odd_amount and position == tags_count) ? ' tag--center' }}">
-                {{ Image('featured') | replace(replaceTags) }}
+            <div class="tag tag-featured">
+                {% if Image('featured') %}
+                    {{ Image('featured') | replace(replaceTags) }}
+                {% else %}
+                    DESTAQUE
+                {% endif %}
             </div>
         {% endif %} 
         {% if product.free_shipping and Image('free_shipping') %}

@@ -1,0 +1,43 @@
+{# Newsletter Home - Seção de Newsletter para Homepage #}
+{% if settings.newsletter_active %}
+    <section class="newsletter-home-section">
+        <div class="newsletter-home-container">
+            <div class="newsletter-home-content">
+                <div class="newsletter-home-icon">
+                    <span class="icon-email" aria-hidden="true"></span>
+                </div>
+                <div class="newsletter-home-text">
+                    <h2 class="newsletter-home-title">Cadastre-se em nossa newsletter</h2>
+                    <p class="newsletter-home-subtitle">e receba novidades e promoções</p>
+                </div>
+            </div>
+            <form class="newsletter-home-form" action="/mvc/store/newsletter/" method="post">
+                <input type="hidden" name="loja" value="{{ store.id }}" />
+                <div class="newsletter-home-fields">
+                    <input
+                        class="newsletter-home-field"
+                        type="text"
+                        name="name"
+                        placeholder="Digite o seu nome"
+                        required
+                        spellcheck="false"
+                        autocomplete="name"
+                    />
+                    <input
+                        class="newsletter-home-field"
+                        type="email"
+                        name="email"
+                        placeholder="Digite seu e-mail"
+                        required
+                        spellcheck="false"
+                        autocomplete="email"
+                    />
+                </div>
+                <button type="submit" class="newsletter-home-button">
+                    CADASTRAR <span class="newsletter-home-arrow">></span>
+                </button>
+            </form>
+        </div>
+    </section>
+{% endif %}
+

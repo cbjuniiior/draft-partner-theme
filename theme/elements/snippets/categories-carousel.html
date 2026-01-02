@@ -1,0 +1,51 @@
+{# Categories Carousel - Categorias Pai com Imagens #}
+{# elements/snippets/categories-carousel.html #}
+
+{# Lista de IDs das categorias permitidas #}
+{# IDs baseados na imagem do painel: (1) Acessórios, (17) Kits, (29) Limpeza Externa, (41) Limpeza Interna, (63) Polimento, (71) Proteção e Acabamento #}
+{% set allowed_category_ids = [1, 17, 29, 41, 63, 71] %}
+{% set parent_categories = [] %}
+
+{% for category in categories %}
+    {# Verifica se o ID da categoria está na lista permitida #}
+    {% if category.id in allowed_category_ids %}
+        {% set parent_categories = parent_categories|merge([category]) %}
+    {% endif %}
+{% endfor %}
+
+{% if parent_categories | length > 0 %}
+    <section class="categories-carousel-section">
+        <div class="categories-carousel-wrapper">
+            <h2 class="categories-carousel-title">Escolha por categoria</h2>
+            <div class="categories-carousel-container">
+                <div class="categories-carousel-track">
+                    {% for category in parent_categories %}
+                        <div class="category-carousel-item">
+                            <a href="{{ category.link }}" class="category-carousel-link" title="{{ category.name }}">
+                                <div class="category-carousel-image">
+                                    {% if category.images and category.images is iterable and category.images|length > 0 %}
+                                        <img src="{{ category.images[0] }}" alt="{{ category.name }}" loading="lazy">
+                                    {% elseif category.image %}
+                                        <img src="{{ category.image }}" alt="{{ category.name }}" loading="lazy">
+                                    {% else %}
+                                        <div class="category-carousel-placeholder">
+                                            <span class="icon-tag"></span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="category-carousel-name">{{ category.name }}</div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="categories-carousel-nav categories-carousel-prev" aria-label="Anterior">
+                    <span class="icon-arrow-left"></span>
+                </button>
+                <button class="categories-carousel-nav categories-carousel-next" aria-label="Próximo">
+                    <span class="icon-arrow-right"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+{% endif %}
+

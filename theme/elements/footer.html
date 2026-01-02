@@ -7,34 +7,7 @@
     {% element 'snippets/banner-line' { 'banner_id': 'footer', 'banner_type': 'full' } %}
     
     {% if settings.newsletter_active %}
-        <div class="footer-newsletter">
-            <div class="newsletter-text">
-                <div class="text">
-                    <p class="text-emphasis">
-                        Aproveite nossas promo&ccedil;&otilde;es!
-                    </p>
-                    <p class="text-paragraph">
-                        Cadastre seu e-mail e receba ofertas exclusivas.
-                    </p>
-                </div>
-            </div>
-
-            <form class="newsletter-email" action="/mvc/store/newsletter/" method="post">
-                <input type="hidden" name="loja" value="{{ store.id }}" />
-                <input
-                    class="email-field"
-                    type="email"
-                    name="email"
-                    placeholder="{{ settings.newsletter_placeholder ? settings.newsletter_placeholder : 'Digite seu e-mail' }}"
-                    required
-                    spellcheck="false"
-                    autocomplete="off"
-                />
-                <button type="submit" class="newsletter-button button1" >
-                    Cadastrar
-                </button>
-            </form>
-        </div>
+        {% element 'snippets/newsletter-home' %}
     {% endif %}
 
     <div class="footer-info">
@@ -108,7 +81,7 @@
         </div>
 
         <div class="info-security">
-            <div class="info-title title--border">Seguran&ccedil;a {{ icon }}</div>
+            <div class="info-title title--border">Segurança {{ icon }}</div>
             <ul class="info-list">
                 <li class="google-seal">
                     <a

@@ -1,0 +1,146 @@
+<header data-header="scroll" class="header">
+    {% if settings.topbar_active %}
+    {# Barra superior configurável #}
+    <div class="header-topbar">
+        <div class="header-topbar-content">
+            {% if settings.topbar_text %}
+                <div class="header-topbar-text">{{ settings.topbar_text|raw }}</div>
+            {% endif %}
+            {% if settings.topbar_coupon_active and settings.topbar_coupon_code %}
+                <div class="header-topbar-coupon">
+                    <span class="coupon-code">{{ settings.topbar_coupon_code }}</span>
+                    <button type="button" class="coupon-copy-btn" data-coupon="{{ settings.topbar_coupon_code }}">
+                        <span class="coupon-copy-text">Copiar</span>
+                    </button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="header-top">
+        <div class="header-content">
+            <button class="header-button mobile" data-toggle="closed" data-target="#menu-mobile" title="Abrir Menu" aria-label="Abrir o menu">
+                <div class="button-line"></div>
+                <div class="button-line"></div>
+                <div class="button-line"></div>
+            </button>
+
+            <a class="header-logo" href="{{ store.url }}" title="Logo da loja" aria-label="logo da {{ store.name }}">
+                {% if settings.logo %}
+                    <img class="header-image" src="{{ asset(settings.logo) }}"
+                        alt="{{ store.name }}"
+                        width="222" height="55"
+                    />
+                {% endif %}
+                {% if 'home' in pages.current %}
+                    <h1 class="header-title">{{ store.name }}</h1>
+                {% else %}
+                    <h6 class="header-title">{{ store.name }}</h6>
+                {% endif %}
+            </a>
+
+            {% element 'snippets/header-search' %}
+
+            {# Central de Atendimento #}
+            <div class="header-support" data-support="dropdown">
+                <span class="icon-support" aria-hidden="true"></span>
+                <span class="support-text">Central de Atendimento</span>
+                <div class="support-dropdown">
+                    {% if settings.support_phone %}
+                        <div class="support-section">
+                            <div class="support-section-title">Compre por telefone</div>
+                            <div class="support-item">
+                                <span class="icon-whatsapp" aria-hidden="true"></span>
+                                <a href="https://wa.me/55{{ settings.support_phone | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" target="_blank" rel="noopener noreferrer" class="support-link">
+                                    {{ settings.support_phone }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if settings.support_whatsapp %}
+                        <div class="support-section">
+                            <div class="support-section-title">Fale no WhatsApp</div>
+                            {% set whatsapp_text = settings.support_whatsapp %}
+                            {% set whatsapp_lines = whatsapp_text | split("\n") %}
+                            {% for line in whatsapp_lines %}
+                                {% set line_trimmed = line | trim %}
+                                {% if line_trimmed %}
+                                    {% set contact_parts = line_trimmed | split('|') %}
+                                    {% if contact_parts | length > 1 %}
+                                        {% set contact_name = contact_parts[0] | trim %}
+                                        {% set contact_number = contact_parts[1] | trim %}
+                                    {% else %}
+                                        {% set contact_name = '' %}
+                                        {% set contact_number = contact_parts[0] | trim %}
+                                    {% endif %}
+                                    <div class="support-item">
+                                        <span class="icon-whatsapp" aria-hidden="true"></span>
+                                        <div class="support-item-content">
+                                            {% if contact_name %}
+                                                <span class="support-contact-name">{{ contact_name }}</span>
+                                            {% endif %}
+                                            <a href="https://wa.me/{{ contact_number | replace({'(': '', ')': '', '-': '', ' ': ''}) }}" target="_blank" rel="noopener noreferrer" class="support-link">
+                                                {{ contact_number }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if settings.support_email %}
+                        <div class="support-section">
+                            <div class="support-section-title">Envie um e-mail</div>
+                            <div class="support-item">
+                                <span class="icon-email" aria-hidden="true"></span>
+                                <a href="mailto:{{ settings.support_email }}" class="support-link">
+                                    {{ settings.support_email }}
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if settings.support_hours %}
+                        <div class="support-section">
+                            <div class="support-section-title">HORÁRIO DE ATENDIMENTO</div>
+                            <div class="support-item support-item-hours">
+                                <span class="support-hours">{{ settings.support_hours }}</span>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="header-account">
+                <span class="icon-account" aria-hidden="true"></span>
+
+                <div class="tray-hide logged" data-logged-user="true">
+                    <span class="account-text">Olá, <span data-customer="name"></span></span>
+                    <div class="account-access">
+                        <a class="account-link" href="{{ links.central }}" title="Minha Conta">Minha conta</a>
+                        <span class="account-separator">/</span>
+                        <a class="account-link" href="{{ links.logout }}" title="Sair">Sair</a>
+                    </div>
+                </div>
+                <div class="tray-hide loggedout" data-logged-user="false">
+                    <span class="account-text">Minha Conta</span>
+                    <div class="account-access">
+                        <a class="account-link" href="{{ links.login }}" title="Entrar">Entrar</a>
+                        <span class="account-separator">/</span>
+                        <a class="account-link" href="{{ links.register }}" title="Cadastrar">Cadastrar</a>
+                    </div>
+                </div>
+            </div>
+
+            <a class="header-cart" href="{{ links.cart }}" title="Carrinho">
+                <span class="icon-cart" aria-hidden="true"></span>
+                <span class="cart-quantity" data-cart="amount">0</span>
+            </a>
+        </div>
+    </div>
+
+    <nav data-menu="scroll" class="header-menu">{% element 'snippets/menu' %}</nav>
+</header>
