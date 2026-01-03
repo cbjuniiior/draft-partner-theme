@@ -1647,17 +1647,112 @@
         updateButtons();
     }
 
+    // Brands Carousel - Carrossel de Logos das Marcas
+    function initBrandsCarousel() {
+        const brandsSection = $('.brands-carousel-section');
+        if (!brandsSection.length) return;
+
+        const container = brandsSection.find('.brands-carousel-container');
+        const track = brandsSection.find('.brands-carousel-track');
+        const prevBtn = brandsSection.find('.brands-carousel-prev');
+        const nextBtn = brandsSection.find('.brands-carousel-next');
+        const items = track.find('.brands-carousel-item');
+
+        // Remove previous event listeners to prevent duplication
+        prevBtn.off('click');
+        nextBtn.off('click');
+
+        // Determinar quantos itens por view baseado no tamanho da tela
+        let itemsPerView = 6; // Desktop padrão
+        if ($(window).width() <= 768) {
+            itemsPerView = 2.5; // Mobile (2.5 itens visíveis)
+        } else if ($(window).width() <= 1024) {
+            itemsPerView = 4; // Tablet
+        }
+
+        if (items.length <= itemsPerView) {
+            // Se tiver menos ou igual aos itens por view, esconder os botões
+            prevBtn.hide();
+            nextBtn.hide();
+            return;
+        } else {
+            prevBtn.show();
+            nextBtn.show();
+        }
+
+        let currentIndex = 0;
+        const totalSlides = Math.ceil(items.length / itemsPerView);
+
+        function updateButtons() {
+            if (totalSlides <= 1) {
+                prevBtn.addClass('disabled').prop('disabled', true);
+                nextBtn.addClass('disabled').prop('disabled', true);
+            } else {
+                prevBtn.removeClass('disabled').prop('disabled', false);
+                nextBtn.removeClass('disabled').prop('disabled', false);
+            }
+            if (currentIndex === 0) {
+                prevBtn.addClass('disabled').prop('disabled', true);
+            } else {
+                prevBtn.removeClass('disabled').prop('disabled', false);
+            }
+            if (currentIndex >= totalSlides - 1) {
+                nextBtn.addClass('disabled').prop('disabled', true);
+            } else {
+                nextBtn.removeClass('disabled').prop('disabled', false);
+            }
+        }
+
+        function scrollToSlide(index) {
+            const itemWidth = items.first().outerWidth(true); // Inclui padding e margin
+            const scrollPosition = index * itemWidth * itemsPerView;
+            
+            const currentScrollTop = $(window).scrollTop();
+            
+            track.animate({
+                scrollLeft: scrollPosition
+            }, 300, function() {
+                $(window).scrollTop(currentScrollTop);
+            });
+            
+            currentIndex = index;
+            updateButtons();
+        }
+
+        prevBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIndex > 0) {
+                scrollToSlide(currentIndex - 1);
+            }
+            return false;
+        });
+
+        nextBtn.on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (currentIndex < totalSlides - 1) {
+                scrollToSlide(currentIndex + 1);
+            }
+            return false;
+        });
+
+        updateButtons();
+    }
+
     // Inicializar quando o DOM estiver pronto
     $(document).ready(function() {
         initBannerReguaCarousel();
         initProductTimers();
         initMenuOverlay(); // Initialize menu overlay
         initCategoriesCarousel(); // Initialize categories carousel
+        initBrandsCarousel(); // Initialize brands carousel
     });
 
     // Re-inicializar em resize (caso mude de mobile para desktop)
     $(window).on('resize', function() {
         initBannerReguaCarousel();
         initCategoriesCarousel();
+        initBrandsCarousel();
     });
 })(jQuery);

@@ -1,0 +1,25 @@
+{# Novidades - Seção de Produtos Novos #}
+{# elements/snippets/novidades-carousel.html #}
+
+{% set quantity = 4 %}
+{% set products = Products({
+    'filter': ['available'],
+    'limit': quantity
+}) %}
+
+{% if products and products | length > 0 %}
+    <section class="section showcase">
+        <h2 class="section-title">Novidades</h2>
+        <ul class="showcase-listProduct">
+            {% for item in products %}
+                <li class="listProduct-item">
+                    {% element 'snippets/product' {
+                        product: item,
+                        slide: false
+                    } %}
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}
+

@@ -1501,10 +1501,10 @@
 
     .box-file .remove-img{
         position: absolute;
-        top: -2px;
-        right: -2px;
-        width: calc(100% + 4px);
-        height: calc(100% + 4px);
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
         background: rgba(255, 255, 255, .6);
         opacity: 0;
         display: flex;
@@ -3366,6 +3366,7 @@
                         <div class="col-left">
                             <ul>
                                 <li class="active">Configurações do slide</li>
+                                <li>Carrossel de Marcas</li>
                             </ul>
                         </div>
                         <div class="col-right">
@@ -3398,6 +3399,375 @@
                                     </div>
                                 </div>
 
+                            </div>
+
+                            <!-- Carrossel de Marcas -->
+                            <div class="tab-show">
+                                <div class="tab-header">
+                                    <div class="title-col">Carrossel de Marcas</div>
+                                    <div class="msg">Configure as logos das marcas para exibição no carrossel da home. Faça upload da imagem e configure o link para cada marca.</div>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="box-option">
+                                        <div class="name">Exibir Carrossel de Marcas na loja?</div>
+                                        <div class="list-radio">
+                                            <label class="option">
+                                                <input type="radio" name="brands_carousel_active" value="1"{% if settings.brands_carousel_active == '1' or not settings.brands_carousel_active %} checked{% endif %}>
+                                                <div class="dot"></div>
+                                                <div class="text">Sim</div>
+                                            </label>
+                                            <label class="option">
+                                                <input type="radio" name="brands_carousel_active" value="0"{% if settings.brands_carousel_active == '0' %} checked{% endif %}>
+                                                <div class="dot"></div>
+                                                <div class="text">Não</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="msg">* Subir imagens com largura máxima de 300px para melhor visualização</div>
+                                    <div class="list-position large">
+                                        <ul class="drag-list banner-info not-hidden">
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_1_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_1_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_1_name" value="{{ settings.brand_carousel_item_1_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_1_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_1_logo" value="{{ settings.brand_carousel_item_1_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_1_link" value="{{ settings.brand_carousel_item_1_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_2_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_2_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_2_name" value="{{ settings.brand_carousel_item_2_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_2_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_2_logo" value="{{ settings.brand_carousel_item_2_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_2_link" value="{{ settings.brand_carousel_item_2_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_3_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_3_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_3_name" value="{{ settings.brand_carousel_item_3_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_3_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_3_logo" value="{{ settings.brand_carousel_item_3_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_3_link" value="{{ settings.brand_carousel_item_3_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_4_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_4_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_4_name" value="{{ settings.brand_carousel_item_4_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_4_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_4_logo"value="{{ settings.brand_carousel_item_4_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_4_link" value="{{ settings.brand_carousel_item_4_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_5_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_5_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_5_name" value="{{ settings.brand_carousel_item_5_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_5_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_5_logo"value="{{ settings.brand_carousel_item_5_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_5_link" value="{{ settings.brand_carousel_item_5_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_6_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_6_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_6_name" value="{{ settings.brand_carousel_item_6_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_6_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_6_logo"value="{{ settings.brand_carousel_item_6_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_6_link" value="{{ settings.brand_carousel_item_6_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_7_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_7_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_7_name" value="{{ settings.brand_carousel_item_7_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_7_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_7_logo"value="{{ settings.brand_carousel_item_7_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_7_link" value="{{ settings.brand_carousel_item_7_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_8_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_8_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_8_name" value="{{ settings.brand_carousel_item_8_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_8_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_8_logo"value="{{ settings.brand_carousel_item_8_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_8_link" value="{{ settings.brand_carousel_item_8_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_9_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_9_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_9_name" value="{{ settings.brand_carousel_item_9_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_9_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_9_logo"value="{{ settings.brand_carousel_item_9_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_9_link" value="{{ settings.brand_carousel_item_9_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_10_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_10_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_10_name" value="{{ settings.brand_carousel_item_10_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_10_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_10_logo"value="{{ settings.brand_carousel_item_10_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_10_link" value="{{ settings.brand_carousel_item_10_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_11_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_11_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_11_name" value="{{ settings.brand_carousel_item_11_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_11_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_11_logo"value="{{ settings.brand_carousel_item_11_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_11_link" value="{{ settings.brand_carousel_item_11_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="banner">
+                                                    <div class="bar">
+                                                        <input type="hidden" name="brand_carousel_item_12_position">
+                                                        <div class="text"></div>
+                                                        <a class="ic-remove" title="Remover item"></a>
+                                                        <label class="input-area">
+                                                            <span class="name">Nome da Marca</span>
+                                                            <input type="text" placeholder="Digite o nome da marca" class="encode-characters" value="{{ settings.brand_carousel_item_12_name|default('') }}">
+                                                            <input type="hidden" name="brand_carousel_item_12_name" value="{{ settings.brand_carousel_item_12_name|default('') }}">
+                                                        </label>
+                                                        <div class="box-file">
+                                                            <div class="input-group file">
+                                                                <div class="area-file">
+                                                                    <input type="file" class="form-control" accept="image/*" name="brand_carousel_item_12_logo">
+                                                                    <input type="hidden" name="brand_carousel_item_12_logo"value="{{ settings.brand_carousel_item_12_logo|default('') }}">
+                                                                    <div class="show-upload"></div>
+                                                                </div>
+                                                                <a class="remove-img"></a>
+                                                            </div>
+                                                        </div>
+                                                        <label class="input-area">
+                                                            <span class="name">Link da Marca</span>
+                                                            <input type="text" placeholder="Ex: /marca/nome-da-marca" name="brand_carousel_item_12_link" value="{{ settings.brand_carousel_item_12_link|default('') }}">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="action-new">
+                                            <button type="button" class="btn-tray action-new large">Adicionar Item</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -4329,6 +4699,33 @@ Outro Contato|(11) 98888-8888" rows="4" style="resize: vertical; font-family: in
 
             },
 
+            // JavaScript específico para marcas (baseado na documentação Tray)
+            initBrandsUpload: function(){
+                // Handlers para remoção de imagens
+                (function($){
+                    $('.remove-img').off('click.brands').on('click.brands', function(){
+                        $(this).parents('.file').find('img').remove();
+                        $(this).parents('.file').find(':hidden').val('');
+                        return false;
+                    });
+
+                    $('.remove-img').off('click.brands2').on('click.brands2', function(){
+                        $(this).parents('.box-file').addClass('removed');
+                    });
+
+                    // Verificar imagens já carregadas
+                    setTimeout(function(){
+                        $('.box-file').find('input:first').each(function(){
+                            if($(this).attr('type') !== "hidden" || $(this).val() == ''){
+                                if(!$(this).parents('.box-file').find('img').length){
+                                    $(this).parents('.box-file').addClass('removed').find('.area-file > div').remove();
+                                }
+                            }
+                        });
+                    }, 500);
+                }(jQuery));
+            },
+
             addNewBrandOrBanner: function(){
                 $('.action-new').on('click', function () {
 
@@ -4419,6 +4816,7 @@ Outro Contato|(11) 98888-8888" rows="4" style="resize: vertical; font-family: in
                 updateCouponFieldVisibility();
             },
 
+
             init: function(){
 
                 console.log('[Tray Dashboard] Organizing itens and loading resources..');
@@ -4438,6 +4836,7 @@ Outro Contato|(11) 98888-8888" rows="4" style="resize: vertical; font-family: in
                 this.addNewBrandOrBanner();
                 this.removeBannerOrBrand();
                 this.toggleCouponField();
+                this.initBrandsUpload();
                 this.saveConfigs();
                 /* Show dashboard */
                 this.showDashboard();
